@@ -1,0 +1,9 @@
+#Sat Aug 30 21:50:04 CST 2025
+CLOUDS=3
+LIGHT_SHAFT=false
+SHADOW_FILTER=false
+SHADOW_PIXEL=16
+STYLE=1
+TAA=false
+shadowDistance=128.0
+shadowMapResolution=1024

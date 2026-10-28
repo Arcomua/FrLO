@@ -1,0 +1,12 @@
+/.cache/
+/build/
+/dist/
+/.venv/
+*.egg-info/
+__pycache__/
+*.pyc
+*.spec
+.env
+*.token
+*.log
+/release/import-report.json

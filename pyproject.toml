@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "frlo-release"
+version = "1.0.0"
+description = "Single-branch FrLO preprocessing and multi-platform publishing"
+requires-python = ">=3.11"
+
+[project.scripts]
+frlo-release = "frlo_release.__main__:main"
+frlo-publisher = "frlo_release.gui:main"
+
+[tool.setuptools.packages.find]
+include = ["frlo_release*"]

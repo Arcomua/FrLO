@@ -1,0 +1,28 @@
+name: Build Windows GUI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frlo_release/**'
+      - 'gui-entry.py'
+      - 'build-gui.ps1'
+      - '.github/workflows/gui.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build GUI
+        shell: pwsh
+        run: ./build-gui.ps1 -Python python
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FrLO-Publisher-Windows
+          path: dist/FrLO-Publisher/
+          if-no-files-found: error

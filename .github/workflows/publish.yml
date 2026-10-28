@@ -1,0 +1,41 @@
+name: Publish FrLO
+on:
+  workflow_dispatch:
+    inputs:
+      targets:
+        description: 'Platforms: github,modrinth,curseforge (comma separated)'
+        required: true
+        default: 'github,modrinth'
+permissions:
+  contents: write
+concurrency:
+  group: frlo-publish
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Publish selected platforms
+        env:
+          FRLO_TARGETS: ${{ inputs.targets }}
+          GH_TOKEN: ${{ github.token }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+        run: python -m frlo_release publish --targets "$FRLO_TARGETS"
+      - name: Preserve artifacts and partial publish receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: FrLO-release-${{ github.run_id }}
+          path: |
+            dist/
+            build/curseforge-unresolved.json
+          if-no-files-found: warn
